@@ -205,6 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const galleryGrid = document.getElementById('galleryGrid');
   const galleryEmpty = document.getElementById('galleryEmpty');
   const galleryCountBadge = document.getElementById('galleryCountBadge');
+  const btnLoadMore = document.getElementById('btnLoadMore');
+  
   const galleryImages = [
     'images/1.jpeg',
     'images/2.jpeg',
@@ -227,15 +229,38 @@ document.addEventListener('DOMContentLoaded', () => {
     'images/18.jpeg'
   ];
 
+  const IMAGES_PER_PAGE = 6;
+  let currentlyLoadedCount = 0;
+
   function loadImages() {
     if (galleryImages.length === 0) {
       galleryEmpty.classList.add('show');
+      if (btnLoadMore) btnLoadMore.style.display = 'none';
     } else {
-      galleryImages.forEach((url, idx) => {
-        renderGalleryItem(url, idx);
-      });
+      loadNextBatch();
       galleryCountBadge.textContent = `${galleryImages.length} صورة`;
     }
+  }
+
+  function loadNextBatch() {
+    const nextBatchEnd = Math.min(currentlyLoadedCount + IMAGES_PER_PAGE, galleryImages.length);
+    for (let i = currentlyLoadedCount; i < nextBatchEnd; i++) {
+      renderGalleryItem(galleryImages[i], i);
+    }
+    currentlyLoadedCount = nextBatchEnd;
+
+    // Check if we loaded all images
+    if (currentlyLoadedCount >= galleryImages.length) {
+      if (btnLoadMore) btnLoadMore.style.display = 'none';
+    } else {
+      if (btnLoadMore) btnLoadMore.style.display = 'inline-block';
+    }
+  }
+
+  if (btnLoadMore) {
+    btnLoadMore.addEventListener('click', () => {
+      loadNextBatch();
+    });
   }
 
   function renderGalleryItem(url, index) {
@@ -304,6 +329,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxNext = document.getElementById('lightboxNext');
   const lightboxCounter = document.getElementById('lightboxCounter');
   
+  // Create and append the CSS loading spinner dynamically inside the lightbox
+  const lightboxLoader = document.createElement('div');
+  lightboxLoader.className = 'lightbox-loader';
+  lightbox.appendChild(lightboxLoader);
+
   let currentImageIndex = 0;
 
   function openLightbox(index) {
@@ -320,9 +350,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateLightboxImage() {
+    // Show spinner and hide image temporarily to ensure no flash of old image or dark screen
+    lightboxLoader.style.display = 'block';
+    lightboxImg.style.opacity = '0';
+    
     lightboxImg.src = galleryImages[currentImageIndex];
     lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
   }
+
+  // Hide the loader spinner and fade-in the image beautifully once fully loaded/cached
+  lightboxImg.onload = () => {
+    lightboxLoader.style.display = 'none';
+    lightboxImg.style.opacity = '1';
+  };
+
+  lightboxImg.onerror = () => {
+    lightboxLoader.style.display = 'none';
+  };
 
   function nextImage() {
     currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
