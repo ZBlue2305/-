@@ -201,45 +201,39 @@ document.addEventListener('DOMContentLoaded', () => {
   // Since we don't have a backend, we'll try to load files sequentially 
   // until we hit a 404 error (or simulate this behavior).
   
-  const MAX_ATTEMPTS = 30; // Max number of files to try loading
-  
   // --- Gallery Logic ---
   const galleryGrid = document.getElementById('galleryGrid');
   const galleryEmpty = document.getElementById('galleryEmpty');
   const galleryCountBadge = document.getElementById('galleryCountBadge');
-  const galleryImages = []; // Store loaded image URLs
+  const galleryImages = [
+    'images/1.jpeg',
+    'images/2.jpeg',
+    'images/2.1.jpeg',
+    'images/3.jpeg',
+    'images/4.jpeg',
+    'images/5.jpeg',
+    'images/6.jpeg',
+    'images/7.jpeg',
+    'images/8.jpeg',
+    'images/9.jpeg',
+    'images/10.jpeg',
+    'images/11.jpeg',
+    'images/12.jpeg',
+    'images/13.jpeg',
+    'images/14.jpeg',
+    'images/15.jpeg',
+    'images/16.jpeg',
+    'images/17.jpeg',
+    'images/18.jpeg'
+  ];
 
-  async function loadImages() {
-    let consecutiveFails = 0;
-    let index = 1;
-
-    // Simulate checking files: 1.jpeg, 2.jpeg...
-    while (consecutiveFails < 2 && index <= MAX_ATTEMPTS) {
-      const url = `images/${index}.jpeg`;
-      const exists = await checkFileExists(url);
-      
-      if (exists) {
-        galleryImages.push(url);
-        renderGalleryItem(url, index - 1);
-        consecutiveFails = 0;
-      } else {
-        // Try jpg just in case
-        const jpgUrl = `images/${index}.jpg`;
-        const jpgExists = await checkFileExists(jpgUrl);
-        if (jpgExists) {
-          galleryImages.push(jpgUrl);
-          renderGalleryItem(jpgUrl, index - 1);
-          consecutiveFails = 0;
-        } else {
-          consecutiveFails++;
-        }
-      }
-      index++;
-    }
-
+  function loadImages() {
     if (galleryImages.length === 0) {
       galleryEmpty.classList.add('show');
     } else {
+      galleryImages.forEach((url, idx) => {
+        renderGalleryItem(url, idx);
+      });
       galleryCountBadge.textContent = `${galleryImages.length} صورة`;
     }
   }
@@ -263,28 +257,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Video Logic ---
   const videoGrid = document.getElementById('videoGrid');
   const videoEmpty = document.getElementById('videoEmpty');
+  const videoFiles = [
+    'videos/1.mp4',
+    'videos/2.mp4',
+    'videos/3.mp4',
+    'videos/4.mp4',
+    'videos/5.mp4'
+  ];
 
-  async function loadVideos() {
-    let consecutiveFails = 0;
-    let index = 1;
-    let loadedCount = 0;
-
-    while (consecutiveFails < 2 && index <= MAX_ATTEMPTS) {
-      const url = `videos/${index}.mp4`;
-      const exists = await checkFileExists(url);
-      
-      if (exists) {
-        renderVideoItem(url, index);
-        loadedCount++;
-        consecutiveFails = 0;
-      } else {
-        consecutiveFails++;
-      }
-      index++;
-    }
-
-    if (loadedCount === 0) {
+  function loadVideos() {
+    if (videoFiles.length === 0) {
       videoEmpty.classList.add('show');
+    } else {
+      videoFiles.forEach((url, index) => {
+        renderVideoItem(url, index + 1);
+      });
     }
   }
 
@@ -303,16 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
     videoGrid.appendChild(div);
-  }
-
-  // Helper function to check if a file exists using fetch HEAD request
-  async function checkFileExists(url) {
-    try {
-      const response = await fetch(url, { method: 'HEAD' });
-      return response.ok;
-    } catch (error) {
-      return false; // CORS or network error usually means we can't load it anyway
-    }
   }
 
   // Start loading media
