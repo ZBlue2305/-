@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>حفل ختام حلقة التميز ١</title>
+  <meta name="description" content="حفل ختام حلقة التميز الأولى. احتفاء بمسيرة القرآن الكريم ونجاح الطالبات المتميزات." />
+
+  <!-- Google Fonts: Cairo + Amiri -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ░░░ NAVBAR ░░░ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <span class="nav-logo">🌸 حلقة التميز ١</span>
+      <ul class="nav-links">
+        <li><a href="#hero">الرئيسية</a></li>
+        <li><a href="#player">النشيد</a></li>
+        <li><a href="#gallery">معرض الصور</a></li>
+        <li><a href="#videos">مقاطع الفيديو</a></li>
+        <li><a href="#thanks">كلمة شكر</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="فتح القائمة">☰</button>
+    </div>
+    <ul class="nav-mobile" id="navMobile">
+      <li><a href="#hero">الرئيسية</a></li>
+      <li><a href="#player">النشيد</a></li>
+      <li><a href="#gallery">معرض الصور</a></li>
+      <li><a href="#videos">مقاطع الفيديو</a></li>
+      <li><a href="#thanks">كلمة شكر</a></li>
+    </ul>
+  </nav>
+
+  <!-- ░░░ HERO ░░░ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-particles" id="heroParticles"></div>
+    <div class="hero-content fade-in">
+      <div class="hero-badge">✦ بسم الله الرحمن الرحيم ✦</div>
+      <h1 class="hero-title">
+        <span class="hero-title-line1">حفل ختام</span>
+        <span class="hero-title-line2">حلقة التميز الأولى</span>
+        <span class="hero-title-line3 gold-text">حلقة التميز ١ ✨</span>
+      </h1>
+      <p class="hero-quote">
+        ❝ خيركم من تعلّم القرآن وعلّمه ❞
+      </p>
+      <p class="hero-hadith">— رواه البخاري —</p>
+      <a href="#player" class="hero-btn">
+        <span>ابدئي رحلتك ✦</span>
+        <div class="btn-glow"></div>
+      </a>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>اكتشفي المزيد</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ░░░ AUDIO PLAYER ░░░ -->
+  <section class="section player-section" id="player">
+    <div class="section-container fade-on-scroll">
+      <div class="section-header">
+        <span class="section-icon">🎵</span>
+        <h2 class="section-title">نشيد الحفل</h2>
+        <p class="section-sub">استمعي إلى النشيد الرسمي لحفل ختام حلقة التميز</p>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="player-card">
+        <div class="player-art">
+          <div class="player-art-inner">
+            <span class="player-art-icon" id="playerArtIcon">🎶</span>
+            <div class="player-ripple" id="playerRipple"></div>
+          </div>
+        </div>
+        <div class="player-info">
+          <h3 class="player-track-name">نشيد حلقة التميز</h3>
+          <p class="player-track-sub">حلقة التميز ١ — ١٤٤٦ هـ</p>
+
+          <div class="player-progress-wrap">
+            <span class="player-time" id="currentTime">0:00</span>
+            <div class="player-progress-bar" id="progressBar">
+              <div class="player-progress-fill" id="progressFill"></div>
+              <div class="player-progress-thumb" id="progressThumb"></div>
+            </div>
+            <span class="player-time" id="totalTime">0:00</span>
+          </div>
+
+          <div class="player-controls">
+            <button class="player-btn-sm" id="btnRestart" title="إعادة">⏮</button>
+            <button class="player-btn-sm" id="btnRewind" title="رجوع ١٠ ثوان">«</button>
+            <button class="player-btn-play" id="btnPlay">
+              <span id="playIcon">▶</span>
+            </button>
+            <button class="player-btn-sm" id="btnForward" title="تقديم ١٠ ثوان">»</button>
+            <button class="player-btn-sm" id="btnLoop" title="تكرار">🔁</button>
+          </div>
+
+          <div class="player-volume-wrap">
+            <span class="volume-icon">🔊</span>
+            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.8" />
+          </div>
+        </div>
+      </div>
+
+      <audio id="audioPlayer" src="audio/main_song.mp3" preload="metadata"></audio>
+    </div>
+  </section>
+
+  <!-- ░░░ PHOTO GALLERY ░░░ -->
+  <section class="section gallery-section" id="gallery">
+    <div class="section-container fade-on-scroll">
+      <div class="section-header">
+        <span class="section-icon">📸</span>
+        <h2 class="section-title">معرض الذكريات</h2>
+        <p class="section-sub">لحظات لن تُنسى من رحلتنا مع كتاب الله</p>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="gallery-controls">
+        <button class="gallery-ctrl-btn active" data-action="all">الكل</button>
+        <button class="gallery-ctrl-btn" id="btnLoadMore">تحميل المزيد ✦</button>
+        <div class="gallery-count-badge" id="galleryCountBadge">0 صورة</div>
+      </div>
+
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Images injected by JS -->
+      </div>
+
+      <div class="gallery-empty" id="galleryEmpty">
+        <div class="gallery-empty-icon">🖼️</div>
+        <p>ضعي صورك في مجلد <code>images/</code> بصيغة pic1.jpg، pic2.jpg …</p>
+        <p class="gallery-empty-sub">سيتم تحميلها تلقائياً عند وجودها</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░░ LIGHTBOX ░░░ -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="إغلاق">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="السابقة">❮</button>
+    <div class="lightbox-content">
+      <img src="" alt="صورة الحفل" id="lightboxImg" />
+    </div>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="التالية">❯</button>
+    <div class="lightbox-counter" id="lightboxCounter"></div>
+  </div>
+
+  <!-- ░░░ VIDEO SHOWCASE ░░░ -->
+  <section class="section video-section" id="videos">
+    <div class="section-container fade-on-scroll">
+      <div class="section-header">
+        <span class="section-icon">🎬</span>
+        <h2 class="section-title">لحظات الفيديو</h2>
+        <p class="section-sub">ذكريات حية من أيام حلقتنا المباركة</p>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="video-grid" id="videoGrid">
+        <!-- Videos injected by JS -->
+      </div>
+
+      <div class="gallery-empty" id="videoEmpty">
+        <div class="gallery-empty-icon">🎥</div>
+        <p>ضعي مقاطع الفيديو في مجلد <code>videos/</code> بصيغة video1.mp4، video2.mp4 …</p>
+        <p class="gallery-empty-sub">سيتم تحميلها تلقائياً عند وجودها</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░░ THANKS CARD ░░░ -->
+  <section class="section thanks-section" id="thanks">
+    <div class="section-container fade-on-scroll">
+      <div class="section-header">
+        <span class="section-icon">💌</span>
+        <h2 class="section-title">كلمة من القلب</h2>
+        <p class="section-sub">رسالة المعلمة إلى طالباتها المتميزات</p>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="thanks-card">
+        <div class="thanks-card-top">
+          <div class="thanks-rosette">🌸</div>
+          <p class="thanks-salutation">إلى طالباتي الغاليات...</p>
+        </div>
+        <div class="thanks-body">
+          <p>
+            بسم الله الرحمن الرحيم
+          </p>
+          <p>
+            كلماتي تعجز أن تعبّر عمّا يجيش في قلبي من فخر وامتنان وهي تُرقم هذه السطور.
+            لقد كنتُن أكثر من مجرد طالبات — كنتُن الدافع والأمل والبهجة في كل يوم دراسي.
+          </p>
+          <p>
+            شاهدتُ بأمّ عيني كيف تحوّل الحرف إلى نور، والآية إلى يقين، والختمة إلى تاج من الوقار.
+            كل خطأ صوّبتيه، وكل آية حفظتيه، وكل صفحة أتقنتيه — كانت لبنةً في بنيان عظيم.
+          </p>
+          <p>
+            اليوم تنغلق دفّة فصل، لكنّ الكتاب لا ينتهي — فالقرآن رفيق العُمر.
+            أسأل الله أن يجعله لكلّ واحدة منكنّ نوراً في الدنيا وذخراً في الآخرة.
+          </p>
+          <p class="thanks-dua">
+            ❝ اللهم اجعل القرآن ربيع قلوبهنّ وجلاء أحزانهنّ ❞
+          </p>
+        </div>
+        <div class="thanks-footer">
+          <span class="thanks-signature">معلمتكنّ بالحب والفخر</span>
+          <div class="thanks-flowers">🌸 🌷 🌼 🌷 🌸</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░░ FOOTER ░░░ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">🌸 حلقة التميز ١</div>
+      <p class="footer-text">حلقة التميز الأولى · ١٤٤٦ هـ</p>
+      <p class="footer-quote">❝ وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ ❞</p>
+      <div class="footer-divider"></div>
+      <p class="footer-copy">جميع الحقوق محفوظة © حلقة التميز ١ ٢٠٢٥</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
