@@ -226,7 +226,8 @@ document.addEventListener('DOMContentLoaded', () => {
     'images/15.jpeg',
     'images/16.jpeg',
     'images/17.jpeg',
-    'images/18.jpeg'
+    'images/18.jpeg',
+    'images/19.jpeg'
   ];
 
   const IMAGES_PER_PAGE = 6;
