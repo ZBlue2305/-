@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const div = document.createElement('div');
     div.className = 'gallery-item fade-on-scroll visible'; // Already visible to skip scroll logic if loaded late
     div.innerHTML = `
-      <img src="${url}" alt="صورة ${index + 1}" loading="lazy">
+      <img src="${url}" alt="صورة ${index + 1}">
       <div class="gallery-overlay">
         <span class="gallery-icon">🔍</span>
       </div>
@@ -356,6 +356,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     lightboxImg.src = galleryImages[currentImageIndex];
     lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+
+    // Foolproof cache check: If image is already fully loaded & cached in the browser, trigger onload logic manually
+    if (lightboxImg.complete) {
+      lightboxLoader.style.display = 'none';
+      lightboxImg.style.opacity = '1';
+    }
   }
 
   // Hide the loader spinner and fade-in the image beautifully once fully loaded/cached
