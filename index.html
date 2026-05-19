@@ -46,14 +46,14 @@
     <div class="hero-content fade-in">
       <div class="hero-badge">✦ بسم الله الرحمن الرحيم ✦</div>
       <h1 class="hero-title">
-        <span class="hero-title-line1">حفل ختام</span>
-        <span class="hero-title-line2">حلقة التميز الأولى</span>
-        <span class="hero-title-line3 gold-text">حلقة التميز ١ ✨</span>
+        <span class="hero-title-line1" id="elHeroLine1">حفل ختام</span>
+        <span class="hero-title-line2" id="elHeroLine2">حلقة التميز الأولى</span>
+        <span class="hero-title-line3 gold-text" id="elHeroLine3">حلقة التميز ١ ✨</span>
       </h1>
-      <p class="hero-quote">
+      <p class="hero-quote" id="elHeroQuote">
         ❝ خيركم من تعلّم القرآن وعلّمه ❞
       </p>
-      <p class="hero-hadith">— رواه البخاري —</p>
+      <p class="hero-hadith" id="elHeroHadith">— رواه البخاري —</p>
       <a href="#player" class="hero-btn">
         <span>ابدئي رحلتك ✦</span>
         <div class="btn-glow"></div>
@@ -127,19 +127,22 @@
       </div>
 
       <div class="gallery-controls">
-        <button class="gallery-ctrl-btn active" data-action="all">الكل</button>
-        <button class="gallery-ctrl-btn" id="btnLoadMore">تحميل المزيد ✦</button>
+        <button class="gallery-ctrl-btn visitor-upload-btn" id="visitorImageBtn">📸 شاركي صورتك</button>
+        <input type="file" id="visitorImageUpload" accept="image/*" hidden multiple>
         <div class="gallery-count-badge" id="galleryCountBadge">0 صورة</div>
       </div>
 
-      <div class="gallery-grid" id="galleryGrid">
-        <!-- Images injected by JS -->
+      <div class="slider-wrapper">
+        <button class="slider-nav slider-prev" id="gallerySliderPrev">❮</button>
+        <div class="gallery-slider" id="galleryGrid">
+          <!-- Images injected by JS -->
+        </div>
+        <button class="slider-nav slider-next" id="gallerySliderNext">❯</button>
       </div>
 
       <div class="gallery-empty" id="galleryEmpty">
         <div class="gallery-empty-icon">🖼️</div>
-        <p>ضعي صورك في مجلد <code>images/</code> بصيغة pic1.jpg، pic2.jpg …</p>
-        <p class="gallery-empty-sub">سيتم تحميلها تلقائياً عند وجودها</p>
+        <p>لا توجد صور. كوني أول من يشارك! 📸</p>
       </div>
     </div>
   </section>
@@ -165,14 +168,22 @@
         <div class="section-divider"></div>
       </div>
 
-      <div class="video-grid" id="videoGrid">
-        <!-- Videos injected by JS -->
+      <div class="gallery-controls">
+         <button class="gallery-ctrl-btn visitor-upload-btn" id="visitorVideoBtn">🎥 شاركي فيديو</button>
+         <input type="file" id="visitorVideoUpload" accept="video/mp4,video/webm" hidden multiple>
+      </div>
+
+      <div class="slider-wrapper">
+        <button class="slider-nav slider-prev" id="videoSliderPrev">❮</button>
+        <div class="video-slider" id="videoGrid">
+          <!-- Videos injected by JS -->
+        </div>
+        <button class="slider-nav slider-next" id="videoSliderNext">❯</button>
       </div>
 
       <div class="gallery-empty" id="videoEmpty">
         <div class="gallery-empty-icon">🎥</div>
-        <p>ضعي مقاطع الفيديو في مجلد <code>videos/</code> بصيغة video1.mp4، video2.mp4 …</p>
-        <p class="gallery-empty-sub">سيتم تحميلها تلقائياً عند وجودها</p>
+        <p>لا توجد مقاطع فيديو. كوني أول من يشارك! 🎥</p>
       </div>
     </div>
   </section>
@@ -190,30 +201,30 @@
       <div class="thanks-card">
         <div class="thanks-card-top">
           <div class="thanks-rosette">🌸</div>
-          <p class="thanks-salutation">إلى طالباتي الغاليات...</p>
+          <p class="thanks-salutation" id="elThanksSalutation">إلى طالباتي الغاليات...</p>
         </div>
         <div class="thanks-body">
           <p>
             بسم الله الرحمن الرحيم
           </p>
-          <p>
+          <p id="elThanks1">
             كلماتي تعجز أن تعبّر عمّا يجيش في قلبي من فخر وامتنان وهي تُرقم هذه السطور.
             لقد كنتُن أكثر من مجرد طالبات — كنتُن الدافع والأمل والبهجة في كل يوم دراسي.
           </p>
-          <p>
+          <p id="elThanks2">
             شاهدتُ بأمّ عيني كيف تحوّل الحرف إلى نور، والآية إلى يقين، والختمة إلى تاج من الوقار.
             كل خطأ صوّبتيه، وكل آية حفظتيه، وكل صفحة أتقنتيه — كانت لبنةً في بنيان عظيم.
           </p>
-          <p>
+          <p id="elThanks3">
             اليوم تنغلق دفّة فصل، لكنّ الكتاب لا ينتهي — فالقرآن رفيق العُمر.
             أسأل الله أن يجعله لكلّ واحدة منكنّ نوراً في الدنيا وذخراً في الآخرة.
           </p>
-          <p class="thanks-dua">
+          <p class="thanks-dua" id="elThanksDua">
             ❝ اللهم اجعل القرآن ربيع قلوبهنّ وجلاء أحزانهنّ ❞
           </p>
         </div>
         <div class="thanks-footer">
-          <span class="thanks-signature">معلمتكنّ بالحب والفخر</span>
+          <span class="thanks-signature" id="elThanksSignature">معلمتكنّ بالحب والفخر</span>
           <div class="thanks-flowers">🌸 🌷 🌼 🌷 🌸</div>
         </div>
       </div>
@@ -223,14 +234,20 @@
   <!-- ░░░ FOOTER ░░░ -->
   <footer class="footer">
     <div class="footer-inner">
-      <div class="footer-logo">🌸 حلقة التميز ١</div>
-      <p class="footer-text">حلقة التميز الأولى · ١٤٤٧ هـ</p>
-      <p class="footer-quote">❝ وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ ❞</p>
+      <div class="footer-logo" id="elFooterLogo">🌸 حلقة التميز ١</div>
+      <p class="footer-text" id="elFooterText">حلقة التميز الأولى · ١٤٤٧ هـ</p>
+      <p class="footer-quote" id="elFooterQuote">❝ وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ ❞</p>
       <div class="footer-divider"></div>
-      <p class="footer-copy">جميع الحقوق محفوظة © حلقة التميز ١ ٢٠٢٥</p>
+      <p class="footer-copy" id="elFooterCopy">جميع الحقوق محفوظة © حلقة التميز ١ ٢٠٢٥</p>
     </div>
   </footer>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  
   <script src="db.js"></script>
   <script src="app.js"></script>
 </body>

@@ -3,216 +3,307 @@
 <head>
   <meta charset="UTF-8">
   <title>لوحة التحكم - حلقة التميز ١</title>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body { margin: 0; padding: 0; background: var(--bg); }
-    .admin-layout {
-      display: flex;
-      min-height: 100vh;
-    }
-    .admin-sidebar {
-      width: 250px;
-      background: var(--surface);
-      padding: 30px 20px;
-      border-left: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-    }
-    .admin-content {
-      flex: 1;
-      padding: 40px;
-      overflow-y: auto;
-    }
-    .admin-card {
-      background: var(--surface);
-      padding: 30px;
-      border-radius: var(--radius-lg);
-      margin-bottom: 30px;
-      box-shadow: var(--shadow-sm);
-    }
-    .admin-title {
-      margin-bottom: 25px;
-      color: var(--primary-dark);
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 10px;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: var(--text);
-    }
-    .form-control {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      font-family: inherit;
-      box-sizing: border-box;
-      background: var(--bg);
-    }
-    textarea.form-control {
-      resize: vertical;
-      min-height: 120px;
-    }
-    .btn-save {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 1rem;
-      transition: background 0.3s;
-    }
-    .btn-save:hover {
-      background: var(--primary-dark);
-    }
-    .media-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 20px;
-      margin-top: 25px;
-    }
-    .media-item {
-      position: relative;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      aspect-ratio: 1;
-      background: var(--bg);
-      border: 1px solid var(--border);
-    }
-    .media-item img, .media-item video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .delete-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(255, 0, 0, 0.8);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      transition: transform 0.2s;
-    }
-    .delete-btn:hover {
-      transform: scale(1.1);
-      background: red;
-    }
-    .admin-nav {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .admin-nav li {
-      margin-bottom: 12px;
-    }
-    .admin-nav a {
-      text-decoration: none;
-      color: var(--text);
-      display: block;
-      padding: 12px 15px;
-      border-radius: var(--radius-md);
-      transition: all 0.3s;
-      font-weight: 600;
-    }
-    .admin-nav a:hover, .admin-nav a.active {
-      background: var(--primary-light);
-      color: var(--primary-dark);
-    }
-    .logout-btn {
-      margin-top: 60px;
-      color: #d32f2f !important;
-      background: #ffebee !important;
-    }
-    .logout-btn:hover {
-      background: #ffcdd2 !important;
-    }
-    #uploadProgress {
-      display: none;
-      color: var(--primary);
-      font-weight: bold;
-      margin-top: 10px;
-    }
-    /* Hide native app styles we don't want */
-    .navbar, .footer { display: none !important; }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="admin-style.css">
 </head>
 <body>
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
   <div class="admin-layout">
-    <div class="admin-sidebar">
-      <h3 style="margin-bottom: 40px; color: var(--primary-dark); text-align: center;">🌸 لوحة التحكم</h3>
-      <ul class="admin-nav">
-        <li><a href="#texts" class="active">تعديل النصوص</a></li>
-        <li><a href="#images">إدارة الصور</a></li>
-        <li><a href="#videos">إدارة الفيديو</a></li>
-        <li><a href="index.html">العودة للموقع ➔</a></li>
-        <li><a href="#" id="logoutBtn" class="logout-btn">تسجيل الخروج</a></li>
-      </ul>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">🌸</div>
+        <h2 class="sidebar-title">لوحة التحكم</h2>
+        <p class="sidebar-sub">حلقة التميز ١</p>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-tab="dashboard">
+          <span class="nav-icon">📊</span><span>الرئيسية</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="images">
+          <span class="nav-icon">📸</span><span>إدارة الصور</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="videos">
+          <span class="nav-icon">🎬</span><span>إدارة الفيديو</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="texts">
+          <span class="nav-icon">✏️</span><span>تعديل المحتوى</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="settings">
+          <span class="nav-icon">⚙️</span><span>الإعدادات</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="index.html" class="nav-item nav-back">
+          <span class="nav-icon">🌐</span><span>العودة للموقع</span>
+        </a>
+        <a href="#" class="nav-item nav-logout" id="logoutBtn">
+          <span class="nav-icon">🚪</span><span>تسجيل الخروج</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+      <button class="mobile-toggle" id="mobileToggle">☰</button>
+      <span>🌸 لوحة التحكم</span>
     </div>
-    <div class="admin-content">
-      
-      <!-- Texts Section -->
-      <div id="texts" class="admin-card">
-        <h2 class="admin-title">تعديل النصوص الأساسية</h2>
-        <div class="form-group">
-          <label>كلمة شكر (الفقرة الأولى)</label>
-          <textarea id="thanks1" class="form-control" placeholder="كلماتي تعجز أن تعبّر..."></textarea>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Tab: Dashboard -->
+      <div class="tab-content active" id="tab-dashboard">
+        <div class="page-header">
+          <h1>مرحباً بك 👋</h1>
+          <p>نظرة عامة على موقع حلقة التميز</p>
         </div>
-        <div class="form-group">
-          <label>كلمة شكر (الفقرة الثانية)</label>
-          <textarea id="thanks2" class="form-control" placeholder="شاهدتُ بأمّ عيني..."></textarea>
+        <div class="stats-grid">
+          <div class="stat-card stat-images">
+            <div class="stat-icon">📸</div>
+            <div class="stat-info">
+              <span class="stat-number" id="statImages">0</span>
+              <span class="stat-label">صورة مرفوعة</span>
+            </div>
+          </div>
+          <div class="stat-card stat-videos">
+            <div class="stat-icon">🎬</div>
+            <div class="stat-info">
+              <span class="stat-number" id="statVideos">0</span>
+              <span class="stat-label">فيديو مرفوع</span>
+            </div>
+          </div>
+          <div class="stat-card stat-status">
+            <div class="stat-icon">🔥</div>
+            <div class="stat-info">
+              <span class="stat-number" id="statStatus">--</span>
+              <span class="stat-label">حالة Firebase</span>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label>كلمة شكر (الفقرة الثالثة)</label>
-          <textarea id="thanks3" class="form-control" placeholder="اليوم تنغلق دفّة فصل..."></textarea>
+        <div class="quick-actions">
+          <h3>إجراءات سريعة</h3>
+          <div class="actions-grid">
+            <button class="action-btn" data-goto="images">📸 رفع صور جديدة</button>
+            <button class="action-btn" data-goto="videos">🎬 رفع فيديو جديد</button>
+            <button class="action-btn" data-goto="texts">✏️ تعديل النصوص</button>
+            <button class="action-btn" data-goto="settings">⚙️ إعداد Firebase</button>
+          </div>
         </div>
-        <button class="btn-save" id="saveTextsBtn">حفظ النصوص ✓</button>
-        <span id="saveStatus" style="color: green; margin-right: 15px; display: none;">تم الحفظ بنجاح!</span>
+        <!-- Firebase Setup Banner -->
+        <div class="setup-banner" id="setupBanner" style="display:none;">
+          <div class="setup-icon">⚠️</div>
+          <div class="setup-text">
+            <h3>Firebase غير مُعدّ</h3>
+            <p>لكي يتمكن جميع الزوار من رؤية الصور والفيديوهات التي ترفعها، يجب إعداد Firebase. اذهب إلى تبويب "الإعدادات" للتعليمات.</p>
+          </div>
+        </div>
       </div>
 
-      <!-- Images Section -->
-      <div id="images" class="admin-card">
-        <h2 class="admin-title">إدارة الصور</h2>
-        <div class="form-group">
-          <label>رفع صور جديدة (يمكنك اختيار عدة صور)</label>
-          <input type="file" id="imageUpload" accept="image/*" class="form-control" multiple>
+      <!-- Tab: Images -->
+      <div class="tab-content" id="tab-images">
+        <div class="page-header">
+          <h1>📸 إدارة الصور</h1>
+          <p>ارفع صوراً جديدة ليراها جميع زوار الموقع</p>
         </div>
-        <div class="media-grid" id="adminImageGrid">
-          <!-- Dynamically loaded -->
+        <div class="upload-zone" id="imageDropZone">
+          <div class="upload-icon">📁</div>
+          <h3>اسحب الصور هنا أو اضغط للاختيار</h3>
+          <p>JPG, PNG, WEBP — حتى 5MB لكل صورة</p>
+          <input type="file" id="imageUpload" accept="image/*" multiple hidden>
+          <button class="upload-btn" id="imageUploadBtn">اختيار صور ✦</button>
+        </div>
+        <div class="progress-bar-wrap" id="imageProgressWrap" style="display:none;">
+          <div class="progress-bar-fill" id="imageProgressFill"></div>
+          <span class="progress-text" id="imageProgressText">جاري الرفع...</span>
+        </div>
+        <h3 class="media-section-title">الصور المرفوعة (<span id="imageCount">0</span>)</h3>
+        <div class="media-grid" id="adminImageGrid"></div>
+        <div class="empty-state" id="imageEmptyState">
+          <div class="empty-icon">🖼️</div>
+          <p>لا توجد صور مرفوعة بعد</p>
         </div>
       </div>
 
-      <!-- Videos Section -->
-      <div id="videos" class="admin-card">
-        <h2 class="admin-title">إدارة مقاطع الفيديو</h2>
-        <div class="form-group">
-          <label>رفع فيديو جديد (يفضل حجم صغير)</label>
-          <input type="file" id="videoUpload" accept="video/mp4,video/webm" class="form-control" multiple>
-          <div id="uploadProgress">جاري الرفع...</div>
+      <!-- Tab: Videos -->
+      <div class="tab-content" id="tab-videos">
+        <div class="page-header">
+          <h1>🎬 إدارة الفيديو</h1>
+          <p>ارفع مقاطع فيديو جديدة ليراها الجميع</p>
         </div>
-        <div class="media-grid" id="adminVideoGrid">
-          <!-- Dynamically loaded -->
+        <div class="upload-zone" id="videoDropZone">
+          <div class="upload-icon">🎥</div>
+          <h3>اسحب الفيديو هنا أو اضغط للاختيار</h3>
+          <p>MP4, WEBM — يفضل حجم أقل من 50MB</p>
+          <input type="file" id="videoUpload" accept="video/mp4,video/webm" multiple hidden>
+          <button class="upload-btn" id="videoUploadBtn">اختيار فيديو ✦</button>
+        </div>
+        <div class="progress-bar-wrap" id="videoProgressWrap" style="display:none;">
+          <div class="progress-bar-fill" id="videoProgressFill"></div>
+          <span class="progress-text" id="videoProgressText">جاري الرفع...</span>
+        </div>
+        <h3 class="media-section-title">الفيديوهات المرفوعة (<span id="videoCount">0</span>)</h3>
+        <div class="media-grid" id="adminVideoGrid"></div>
+        <div class="empty-state" id="videoEmptyState">
+          <div class="empty-icon">🎥</div>
+          <p>لا توجد فيديوهات مرفوعة بعد</p>
         </div>
       </div>
 
-    </div>
+      <!-- Tab: Texts (Content) -->
+      <div class="tab-content" id="tab-texts">
+        <div class="page-header">
+          <h1>✏️ تعديل محتوى الموقع</h1>
+          <p>تحكمي في جميع نصوص وعناصر الموقع من هنا</p>
+        </div>
+
+        <div class="form-card" style="margin-bottom: 20px;">
+          <h3>واجهة الموقع (الرئيسية)</h3>
+          <div class="form-group">
+            <label>السطر الأول للعنوان</label>
+            <input type="text" id="heroLine1" class="form-input" placeholder="حفل ختام" />
+          </div>
+          <div class="form-group">
+            <label>السطر الثاني للعنوان</label>
+            <input type="text" id="heroLine2" class="form-input" placeholder="حلقة التميز الأولى" />
+          </div>
+          <div class="form-group">
+            <label>السطر الثالث للعنوان</label>
+            <input type="text" id="heroLine3" class="form-input" placeholder="حلقة التميز ١ ✨" />
+          </div>
+          <div class="form-group">
+            <label>الاقتباس (الرئيسي)</label>
+            <input type="text" id="heroQuote" class="form-input" placeholder="❝ خيركم من تعلّم القرآن وعلّمه ❞" />
+          </div>
+          <div class="form-group">
+            <label>المصدر (الحديث)</label>
+            <input type="text" id="heroHadith" class="form-input" placeholder="— رواه البخاري —" />
+          </div>
+        </div>
+
+        <div class="form-card" style="margin-bottom: 20px;">
+          <h3>النشيد الرسمي للموقع</h3>
+          <div class="upload-zone" id="audioDropZone" style="padding: 30px 20px;">
+            <div class="upload-icon">🎵</div>
+            <h3>ارفعي ملف صوتي جديد (MP3)</h3>
+            <input type="file" id="audioUpload" accept="audio/*" hidden>
+            <button class="upload-btn" id="audioUploadBtn">اختيار ملف ✦</button>
+          </div>
+          <div class="progress-bar-wrap" id="audioProgressWrap" style="display:none;">
+            <div class="progress-bar-fill" id="audioProgressFill"></div>
+            <span class="progress-text" id="audioProgressText">جاري الرفع...</span>
+          </div>
+          <p id="currentAudioText" style="color: var(--ad-primary); text-align: center; margin-top: 10px; font-weight: bold;"></p>
+        </div>
+
+        <div class="form-card" style="margin-bottom: 20px;">
+          <h3>كلمة الشكر</h3>
+          <div class="form-group">
+            <label>الترحيب</label>
+            <input type="text" id="thanksSalutation" class="form-input" placeholder="إلى طالباتي الغاليات..." />
+          </div>
+          <div class="form-group">
+            <label>الفقرة الأولى</label>
+            <textarea id="thanks1" rows="3" placeholder="كلماتي تعجز أن تعبّر عمّا يجيش في قلبي..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>الفقرة الثانية</label>
+            <textarea id="thanks2" rows="3" placeholder="شاهدتُ بأمّ عيني كيف تحوّل الحرف إلى نور..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>الفقرة الثالثة</label>
+            <textarea id="thanks3" rows="3" placeholder="اليوم تنغلق دفّة فصل، لكنّ الكتاب لا ينتهي..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>الدعاء الخاتم</label>
+            <input type="text" id="thanksDua" class="form-input" placeholder="❝ اللهم اجعل القرآن ربيع قلوبهنّ ❞" />
+          </div>
+          <div class="form-group">
+            <label>التوقيع</label>
+            <input type="text" id="thanksSignature" class="form-input" placeholder="معلمتكنّ بالحب والفخر" />
+          </div>
+        </div>
+
+        <div class="form-card" style="margin-bottom: 20px;">
+          <h3>تذييل الموقع (الفوتر)</h3>
+          <div class="form-group">
+            <label>الشعار (النص)</label>
+            <input type="text" id="footerLogo" class="form-input" placeholder="🌸 حلقة التميز ١" />
+          </div>
+          <div class="form-group">
+            <label>النص الفرعي</label>
+            <input type="text" id="footerText" class="form-input" placeholder="حلقة التميز الأولى · ١٤٤٧ هـ" />
+          </div>
+          <div class="form-group">
+            <label>الاقتباس</label>
+            <input type="text" id="footerQuote" class="form-input" placeholder="❝ وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ ❞" />
+          </div>
+          <div class="form-group">
+            <label>حقوق النشر</label>
+            <input type="text" id="footerCopy" class="form-input" placeholder="جميع الحقوق محفوظة © حلقة التميز ١ ٢٠٢٥" />
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 40px;">
+          <button class="save-btn" id="saveTextsBtn" style="font-size: 1.2rem; padding: 15px 50px;">حفظ جميع التغييرات ✓</button>
+        </div>
+      </div>
+
+      <!-- Tab: Settings -->
+      <div class="tab-content" id="tab-settings">
+        <div class="page-header">
+          <h1>⚙️ إعداد Firebase</h1>
+          <p>لجعل الرفع يعمل لجميع الزوار</p>
+        </div>
+        <div class="form-card">
+          <div class="setup-steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <h4>إنشاء مشروع Firebase</h4>
+                <p>اذهب إلى <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> وأنشئ مشروعاً جديداً باسم "dar-aishe"</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <h4>إضافة تطبيق ويب</h4>
+                <p>في المشروع، اضغط على أيقونة الويب (<code>&lt;/&gt;</code>) وسجّل التطبيق، ثم انسخ بيانات الإعداد</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <h4>تفعيل Firestore و Storage</h4>
+                <p>من القائمة الجانبية: Build → Firestore Database → Create (test mode)<br>
+                   ثم: Build → Storage → Get started (test mode)</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <h4>الصق بيانات الإعداد</h4>
+                <p>افتح ملف <code>firebase-config.js</code> والصق القيم من Firebase Console</p>
+              </div>
+            </div>
+          </div>
+          <div class="firebase-status" id="firebaseStatusCard">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">جاري الفحص...</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
   </div>
 
-  <script src="db.js"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="firebase-config.js"></script>
   <script src="admin.js"></script>
 </body>
 </html>

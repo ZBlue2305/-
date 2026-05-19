@@ -713,21 +713,89 @@ img, video {
   font-weight: 700;
 }
 
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+.visitor-upload-btn {
+  background: var(--g-gold) !important;
+  color: var(--c-burgundy) !important;
+  border: none !important;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(207, 170, 118, 0.2);
 }
 
-.gallery-item {
+.visitor-upload-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(207, 170, 118, 0.4);
+}
+
+.gallery-grid, .video-slider {
+  display: flex;
+  overflow-x: auto;
+  gap: 1.5rem;
+  padding: 10px 5px;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+.gallery-grid::-webkit-scrollbar, .video-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.slider-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.slider-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--c-cream);
+  border: 1px solid rgba(138, 75, 93, 0.2);
+  color: var(--c-burgundy);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  font-size: 1.2rem;
+  transition: all var(--trans-fast);
+}
+
+.slider-nav:hover {
+  background: var(--c-burgundy);
+  color: #fff;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: var(--shadow-md);
+}
+
+.slider-prev { right: -20px; }
+.slider-next { left: -20px; }
+
+@media (max-width: 768px) {
+  .slider-prev { right: -5px; }
+  .slider-next { left: -5px; }
+}
+
+.gallery-item, .video-item {
   position: relative;
   border-radius: 15px;
   overflow: hidden;
-  aspect-ratio: 1 / 1;
   cursor: pointer;
   box-shadow: var(--shadow-sm);
   transition: transform var(--trans-med), box-shadow var(--trans-med);
   background-color: var(--c-bg-dark);
+  flex: 0 0 300px;
+  scroll-snap-align: start;
+}
+
+.gallery-item {
+  aspect-ratio: 1 / 1;
 }
 
 .gallery-item:hover {

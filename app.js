@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ░░░ 2. SCROLL ANIMATIONS (FADE IN) ░░░
   const fadeElements = document.querySelectorAll('.fade-on-scroll');
-  
+
   const fadeObserverOptions = {
     root: null,
     rootMargin: '0px',
@@ -61,19 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < 20; i++) {
       const particle = document.createElement('div');
       particle.classList.add('particle');
-      
+
       // Random properties
       const size = Math.random() * 8 + 2; // 2px to 10px
       const left = Math.random() * 100; // 0% to 100%
       const duration = Math.random() * 4 + 3; // 3s to 7s
       const delay = Math.random() * 5; // 0s to 5s
-      
+
       particle.style.width = `${size}px`;
       particle.style.height = `${size}px`;
       particle.style.left = `${left}%`;
       particle.style.animationDuration = `${duration}s`;
       particle.style.animationDelay = `${delay}s`;
-      
+
       particlesContainer.appendChild(particle);
     }
   }
@@ -89,13 +89,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnForward = document.getElementById('btnForward');
   const btnLoop = document.getElementById('btnLoop');
   const volumeSlider = document.getElementById('volumeSlider');
-  
+
   const currentTimeEl = document.getElementById('currentTime');
   const totalTimeEl = document.getElementById('totalTime');
   const progressBar = document.getElementById('progressBar');
   const progressFill = document.getElementById('progressFill');
   const progressThumb = document.getElementById('progressThumb');
-  
+
   const playerArtInner = document.querySelector('.player-art-inner');
   const playerArtIcon = document.getElementById('playerArtIcon');
 
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
   audioPlayer.addEventListener('timeupdate', () => {
     const current = audioPlayer.currentTime;
     const total = audioPlayer.duration;
-    
+
     if (!isNaN(total)) {
       const percent = (current / total) * 100;
       progressFill.style.width = `${percent}%`;
@@ -197,163 +197,208 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ░░░ 6. DYNAMIC MEDIA LOADER (IMAGES & VIDEOS) ░░░
-  // Since we don't have a backend, we'll try to load files sequentially 
-  // until we hit a 404 error (or simulate this behavior).
-  
+  // ░░░ 6. DYNAMIC MEDIA LOADER & SLIDERS ░░░
+
   // --- Gallery Logic ---
   const galleryGrid = document.getElementById('galleryGrid');
   const galleryEmpty = document.getElementById('galleryEmpty');
   const galleryCountBadge = document.getElementById('galleryCountBadge');
-  const btnLoadMore = document.getElementById('btnLoadMore');
+
+  let galleryImages = [];
   
-  let galleryImages = [
-    'images/1.jpeg',
-    'images/2.jpeg',
-    'images/2.1.jpeg',
-    'images/3.jpeg',
-    'images/4.jpeg',
-    'images/5.jpeg',
-    'images/6.jpeg',
-    'images/7.jpeg',
-    'images/8.jpeg',
-    'images/9.jpeg',
-    'images/10.jpeg',
-    'images/11.jpeg',
-    'images/12.jpeg',
-    'images/13.jpeg',
-    'images/14.jpeg',
-    'images/15.jpeg',
-    'images/16.jpeg',
-    'images/17.jpeg',
-    'images/18.jpeg',
-    'images/19.jpeg'
-  ];
-
-  const IMAGES_PER_PAGE = 6;
-  let currentlyLoadedCount = 0;
-
-  function loadImages() {
-    if (galleryImages.length === 0) {
-      galleryEmpty.classList.add('show');
-      if (btnLoadMore) btnLoadMore.style.display = 'none';
-    } else {
-      loadNextBatch();
-      galleryCountBadge.textContent = `${galleryImages.length} صورة`;
-    }
-  }
-
-  function loadNextBatch() {
-    const nextBatchEnd = Math.min(currentlyLoadedCount + IMAGES_PER_PAGE, galleryImages.length);
-    for (let i = currentlyLoadedCount; i < nextBatchEnd; i++) {
-      renderGalleryItem(galleryImages[i], i);
-    }
-    currentlyLoadedCount = nextBatchEnd;
-
-    // Check if we loaded all images
-    if (currentlyLoadedCount >= galleryImages.length) {
-      if (btnLoadMore) btnLoadMore.style.display = 'none';
-    } else {
-      if (btnLoadMore) btnLoadMore.style.display = 'inline-block';
-    }
-  }
-
-  if (btnLoadMore) {
-    btnLoadMore.addEventListener('click', () => {
-      loadNextBatch();
+  // Slider Controls
+  const galleryPrev = document.getElementById('gallerySliderPrev');
+  const galleryNext = document.getElementById('gallerySliderNext');
+  
+  if (galleryPrev && galleryNext && galleryGrid) {
+    galleryPrev.addEventListener('click', () => {
+      galleryGrid.scrollBy({ left: 300, behavior: 'smooth' }); // left is positive in RTL
     });
-  }
-
-  function renderGalleryItem(url, index) {
-    const div = document.createElement('div');
-    div.className = 'gallery-item fade-on-scroll visible'; // Already visible to skip scroll logic if loaded late
-    div.innerHTML = `
-      <img src="${url}" alt="صورة ${index + 1}">
-      <div class="gallery-overlay">
-        <span class="gallery-icon">🔍</span>
-      </div>
-    `;
-    
-    // Add lightbox click event
-    div.addEventListener('click', () => openLightbox(index));
-    
-    galleryGrid.appendChild(div);
+    galleryNext.addEventListener('click', () => {
+      galleryGrid.scrollBy({ left: -300, behavior: 'smooth' });
+    });
   }
 
   // --- Video Logic ---
   const videoGrid = document.getElementById('videoGrid');
   const videoEmpty = document.getElementById('videoEmpty');
-  let videoFiles = [
-    'videos/1.mp4',
-    'videos/2.mp4',
-    'videos/3.mp4',
-    'videos/4.mp4',
-    'videos/5.mp4'
-  ];
+  
+  let videoFiles = [];
 
-  function loadVideos() {
-    if (videoFiles.length === 0) {
-      videoEmpty.classList.add('show');
+  const videoPrev = document.getElementById('videoSliderPrev');
+  const videoNext = document.getElementById('videoSliderNext');
+
+  if (videoPrev && videoNext && videoGrid) {
+    videoPrev.addEventListener('click', () => {
+      videoGrid.scrollBy({ left: 320, behavior: 'smooth' });
+    });
+    videoNext.addEventListener('click', () => {
+      videoGrid.scrollBy({ left: -320, behavior: 'smooth' });
+    });
+  }
+
+  // Load Media from Firebase or Local
+  async function loadMedia() {
+    if (typeof isFirebaseConfigured !== 'undefined' && isFirebaseConfigured && fireDB) {
+      // Fetch from Firebase
+      const fireImages = await fireGetMedia('image');
+      galleryImages = fireImages.map(img => img.url);
+
+      const fireVideos = await fireGetMedia('video');
+      videoFiles = fireVideos;
     } else {
-      videoFiles.forEach((url, index) => {
-        renderVideoItem(url, index + 1);
+      // Local fallback
+      galleryImages = [
+        'images/1.jpeg', 'images/2.jpeg', 'images/2.1.jpeg', 'images/3.jpeg',
+        'images/4.jpeg', 'images/5.jpeg', 'images/6.jpeg', 'images/7.jpeg'
+      ];
+      videoFiles = [
+        { url: 'videos/1.mp4', name: 'مقطع مرئي 1' },
+        { url: 'videos/2.mp4', name: 'مقطع مرئي 2' }
+      ];
+    }
+
+    renderGallery();
+    renderVideos();
+  }
+
+  function renderGallery() {
+    galleryGrid.innerHTML = '';
+    if (galleryImages.length === 0) {
+      galleryEmpty.classList.add('show');
+      galleryCountBadge.textContent = '0 صورة';
+    } else {
+      galleryEmpty.classList.remove('show');
+      galleryCountBadge.textContent = `${galleryImages.length} صورة`;
+      galleryImages.forEach((url, index) => {
+        const div = document.createElement('div');
+        div.className = 'gallery-item fade-on-scroll visible';
+        div.innerHTML = `
+          <img src="${url}" alt="صورة ${index + 1}">
+          <div class="gallery-overlay">
+            <span class="gallery-icon">🔍</span>
+          </div>
+        `;
+        div.addEventListener('click', () => openLightbox(index));
+        galleryGrid.appendChild(div);
       });
     }
   }
 
-  function renderVideoItem(url, index) {
-    const div = document.createElement('div');
-    div.className = 'video-item fade-on-scroll visible';
-    div.innerHTML = `
-      <div class="video-wrapper">
-        <video controls preload="metadata" poster="">
-          <source src="${url}" type="video/mp4">
-          متصفحك لا يدعم تشغيل الفيديو.
-        </video>
-      </div>
-      <div class="video-info">
-        <h3 class="video-title">مقطع مرئي ${index}</h3>
-      </div>
-    `;
-    videoGrid.appendChild(div);
+  function renderVideos() {
+    videoGrid.innerHTML = '';
+    if (videoFiles.length === 0) {
+      videoEmpty.classList.add('show');
+    } else {
+      videoEmpty.classList.remove('show');
+      videoFiles.forEach((vid, index) => {
+        const div = document.createElement('div');
+        div.className = 'video-item fade-on-scroll visible';
+        const vidName = vid.name || `مقطع مرئي ${index + 1}`;
+        const vidUrl = vid.url || vid;
+        div.innerHTML = `
+          <div class="video-wrapper">
+            <video controls preload="metadata" poster="">
+              <source src="${vidUrl}" type="video/mp4">
+              متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+          </div>
+          <div class="video-info">
+            <h3 class="video-title">${vidName}</h3>
+          </div>
+        `;
+        videoGrid.appendChild(div);
+      });
+    }
   }
 
-  async function loadMediaFromDB() {
-    try {
-      if (typeof getAllSettings !== 'undefined') {
-        const settings = await getAllSettings();
-        const thanksBody = document.querySelector('.thanks-body');
-        if (settings['thanks1'] || settings['thanks2'] || settings['thanks3']) {
-          thanksBody.innerHTML = `
-            <p>بسم الله الرحمن الرحيم</p>
-            ${settings['thanks1'] ? `<p>${settings['thanks1'].replace(/\n/g, '<br>')}</p>` : ''}
-            ${settings['thanks2'] ? `<p>${settings['thanks2'].replace(/\n/g, '<br>')}</p>` : ''}
-            ${settings['thanks3'] ? `<p>${settings['thanks3'].replace(/\n/g, '<br>')}</p>` : ''}
-            <p class="thanks-dua">❝ اللهم اجعل القرآن ربيع قلوبهنّ وجلاء أحزانهنّ ❞</p>
-          `;
+  // --- Dynamic Content & Settings Loader ---
+  async function loadSettings() {
+    if (typeof isFirebaseConfigured !== 'undefined' && isFirebaseConfigured && fireDB) {
+      const settings = await fireGetSettings();
+      
+      const contentFields = [
+        { id: 'elHeroLine1', key: 'heroLine1' },
+        { id: 'elHeroLine2', key: 'heroLine2' },
+        { id: 'elHeroLine3', key: 'heroLine3' },
+        { id: 'elHeroQuote', key: 'heroQuote' },
+        { id: 'elHeroHadith', key: 'heroHadith' },
+        { id: 'elThanksSalutation', key: 'thanksSalutation' },
+        { id: 'elThanks1', key: 'thanks1' },
+        { id: 'elThanks2', key: 'thanks2' },
+        { id: 'elThanks3', key: 'thanks3' },
+        { id: 'elThanksDua', key: 'thanksDua' },
+        { id: 'elThanksSignature', key: 'thanksSignature' },
+        { id: 'elFooterLogo', key: 'footerLogo' },
+        { id: 'elFooterText', key: 'footerText' },
+        { id: 'elFooterQuote', key: 'footerQuote' },
+        { id: 'elFooterCopy', key: 'footerCopy' }
+      ];
+
+      contentFields.forEach(field => {
+        if (settings[field.key]) {
+          const el = document.getElementById(field.id);
+          if (el) el.textContent = settings[field.key];
+        }
+      });
+
+      // Update audio source if exists
+      if (settings.mainAudioUrl) {
+        const audioEl = document.getElementById('audioPlayer');
+        if (audioEl) {
+          audioEl.src = settings.mainAudioUrl;
+          audioEl.load();
         }
       }
-
-      if (typeof getMedia !== 'undefined') {
-        const dbImages = await getMedia('image');
-        dbImages.forEach(img => {
-          galleryImages.push(img.dataUrl);
-        });
-
-        const dbVideos = await getMedia('video');
-        dbVideos.forEach(vid => {
-          videoFiles.push(vid.dataUrl);
-        });
-      }
-    } catch (e) {
-      console.log('IndexedDB not ready or unsupported. Using defaults.');
     }
-
-    loadImages();
-    loadVideos();
   }
 
-  loadMediaFromDB();
+  loadMedia();
+  loadSettings();
+
+  // ░░░ VISITOR UPLOAD ░░░
+  const visitorImageUpload = document.getElementById('visitorImageUpload');
+  const visitorImageBtn = document.getElementById('visitorImageBtn');
+  const visitorVideoUpload = document.getElementById('visitorVideoUpload');
+  const visitorVideoBtn = document.getElementById('visitorVideoBtn');
+
+  function setupVisitorUpload(btn, input, type) {
+    if (!btn || !input) return;
+    btn.addEventListener('click', () => {
+      if (typeof isFirebaseConfigured !== 'undefined' && isFirebaseConfigured) {
+        input.click();
+      } else {
+        alert('ميزة المشاركة غير مفعلة حالياً. (تحتاج إعداد Firebase)');
+      }
+    });
+
+    input.addEventListener('change', async (e) => {
+      const files = e.target.files;
+      if (!files.length) return;
+      
+      btn.textContent = 'جاري الرفع... ⏳';
+      btn.disabled = true;
+
+      try {
+        for (let i = 0; i < files.length; i++) {
+          await fireUploadMedia(files[i], type);
+        }
+        alert('شكراً لمشاركتك! تم رفع الملفات بنجاح. 🌸');
+        await loadMedia();
+      } catch (err) {
+        alert('حدث خطأ أثناء الرفع.');
+        console.error(err);
+      } finally {
+        btn.textContent = type === 'image' ? '📸 شاركي صورتك' : '🎥 شاركي فيديو';
+        btn.disabled = false;
+        input.value = '';
+      }
+    });
+  }
+
+  setupVisitorUpload(visitorImageBtn, visitorImageUpload, 'image');
+  setupVisitorUpload(visitorVideoBtn, visitorVideoUpload, 'video');
+
 
   // ░░░ 7. LIGHTBOX LOGIC ░░░
   const lightbox = document.getElementById('lightbox');
@@ -362,8 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxPrev = document.getElementById('lightboxPrev');
   const lightboxNext = document.getElementById('lightboxNext');
   const lightboxCounter = document.getElementById('lightboxCounter');
-  
-  // Create and append the CSS loading spinner dynamically inside the lightbox
+
   const lightboxLoader = document.createElement('div');
   lightboxLoader.className = 'lightbox-loader';
   lightbox.appendChild(lightboxLoader);
@@ -375,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentImageIndex = index;
     updateLightboxImage();
     lightbox.classList.add('active');
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    document.body.style.overflow = 'hidden';
   }
 
   function closeLightbox() {
@@ -384,21 +428,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateLightboxImage() {
-    // Show spinner and hide image temporarily to ensure no flash of old image or dark screen
     lightboxLoader.style.display = 'block';
     lightboxImg.style.opacity = '0';
-    
+
     lightboxImg.src = galleryImages[currentImageIndex];
     lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
 
-    // Foolproof cache check: If image is already fully loaded & cached in the browser, trigger onload logic manually
     if (lightboxImg.complete) {
       lightboxLoader.style.display = 'none';
       lightboxImg.style.opacity = '1';
     }
   }
 
-  // Hide the loader spinner and fade-in the image beautifully once fully loaded/cached
   lightboxImg.onload = () => {
     lightboxLoader.style.display = 'none';
     lightboxImg.style.opacity = '1';
@@ -418,25 +459,21 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLightboxImage();
   }
 
-  // Lightbox Event Listeners
   lightboxClose.addEventListener('click', closeLightbox);
-  lightboxNext.addEventListener('click', nextImage); // Next in RTL means left visually, but logic is +1
+  lightboxNext.addEventListener('click', nextImage);
   lightboxPrev.addEventListener('click', prevImage);
-  
-  // Close on background click
+
   lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) {
       closeLightbox();
     }
   });
 
-  // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     if (!lightbox.classList.contains('active')) return;
-    
     if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') nextImage(); // Left arrow goes to next in RTL
-    if (e.key === 'ArrowRight') prevImage(); // Right arrow goes to prev in RTL
+    if (e.key === 'ArrowLeft') nextImage(); 
+    if (e.key === 'ArrowRight') prevImage(); 
   });
 
 });
