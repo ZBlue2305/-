@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const galleryCountBadge = document.getElementById('galleryCountBadge');
   const btnLoadMore = document.getElementById('btnLoadMore');
   
-  const galleryImages = [
+  let galleryImages = [
     'images/1.jpeg',
     'images/2.jpeg',
     'images/2.1.jpeg',
@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Video Logic ---
   const videoGrid = document.getElementById('videoGrid');
   const videoEmpty = document.getElementById('videoEmpty');
-  const videoFiles = [
+  let videoFiles = [
     'videos/1.mp4',
     'videos/2.mp4',
     'videos/3.mp4',
@@ -318,9 +318,42 @@ document.addEventListener('DOMContentLoaded', () => {
     videoGrid.appendChild(div);
   }
 
-  // Start loading media
-  loadImages();
-  loadVideos();
+  async function loadMediaFromDB() {
+    try {
+      if (typeof getAllSettings !== 'undefined') {
+        const settings = await getAllSettings();
+        const thanksBody = document.querySelector('.thanks-body');
+        if (settings['thanks1'] || settings['thanks2'] || settings['thanks3']) {
+          thanksBody.innerHTML = `
+            <p>بسم الله الرحمن الرحيم</p>
+            ${settings['thanks1'] ? `<p>${settings['thanks1'].replace(/\n/g, '<br>')}</p>` : ''}
+            ${settings['thanks2'] ? `<p>${settings['thanks2'].replace(/\n/g, '<br>')}</p>` : ''}
+            ${settings['thanks3'] ? `<p>${settings['thanks3'].replace(/\n/g, '<br>')}</p>` : ''}
+            <p class="thanks-dua">❝ اللهم اجعل القرآن ربيع قلوبهنّ وجلاء أحزانهنّ ❞</p>
+          `;
+        }
+      }
+
+      if (typeof getMedia !== 'undefined') {
+        const dbImages = await getMedia('image');
+        dbImages.forEach(img => {
+          galleryImages.push(img.dataUrl);
+        });
+
+        const dbVideos = await getMedia('video');
+        dbVideos.forEach(vid => {
+          videoFiles.push(vid.dataUrl);
+        });
+      }
+    } catch (e) {
+      console.log('IndexedDB not ready or unsupported. Using defaults.');
+    }
+
+    loadImages();
+    loadVideos();
+  }
+
+  loadMediaFromDB();
 
   // ░░░ 7. LIGHTBOX LOGIC ░░░
   const lightbox = document.getElementById('lightbox');
